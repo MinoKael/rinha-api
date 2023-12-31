@@ -1,5 +1,5 @@
 version: '3.5'
-# 
+# docker build -t rinha-api . && docker compose up
 services:
   api1: &app
     image: rinha-api
