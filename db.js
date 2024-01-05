@@ -1,10 +1,10 @@
 const { Pool } = require('pg');
 const pool = new Pool({
+    host: process.env.DB_HOST,
+    database: process.env.DB_NAME,
     user: process.env.DB_USER,
     password: process.env.DB_PASSWORD,
-    host: process.env.DB_HOST,
     port: process.env.DB_PORT,
-    database: process.env.DB_NAME,
     max: process.env.DB_POOL || 200,
 });
 
@@ -43,11 +43,11 @@ async function getByTermo(termo) {
 }
 async function countByApelido(apelido) {
     const client = await pool.connect();
-    const query = 'SELECT COUNT(1) FROM PESSOAS WHERE APELIDO = $1;';
+    const query = 'SELECT COUNT(1) > 0 FROM PESSOAS WHERE APELIDO = $1;';
     const values = [apelido];
     const res = await client.query(query, values);
     client.release();
-    return res.rows[0].count;
+    return res.rows[0]['?column?'];
 }
 async function countPessoas() {
     const client = await pool.connect();
@@ -55,7 +55,6 @@ async function countPessoas() {
     client.release();
     return res.rows[0];
 }
-
 module.exports = {
     insertPessoa,
     getById,
